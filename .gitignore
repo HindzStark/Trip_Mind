@@ -1,0 +1,232 @@
+# ============================================================
+# TripMind .gitignore
+# ============================================================
+
+# ------------------------------------------------------------
+# Python
+# ------------------------------------------------------------
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+*.egg
+.eggs/
+sdist/
+wheels/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+pytestdebug.log
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ruff
+.ruff_cache/
+
+# Pyright
+pyrightconfig.json
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+docs
+myenv 
+# ------------------------------------------------------------
+# Node.js / Frontend
+# ------------------------------------------------------------
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Vite
+*.local
+
+# Parcel
+.parcel-cache/
+
+# TypeScript
+*.tsbuildinfo
+
+# eslint
+.eslintcache
+
+# Stylelint
+.stylelintcache
+
+# ------------------------------------------------------------
+# Environment Files
+# ------------------------------------------------------------
+
+.env
+.env.local
+.env.development
+.env.development.local
+.env.test
+.env.test.local
+.env.production
+.env.production.local
+.env.staging
+.env.*
+!.env.example
+
+# ------------------------------------------------------------
+# IDE / Editor
+# ------------------------------------------------------------
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# JetBrains (IntelliJ, PyCharm, WebStorm)
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Emacs
+*~
+\#*\#
+.#*
+
+# ------------------------------------------------------------
+# Operating System
+# ------------------------------------------------------------
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+
+# ------------------------------------------------------------
+# Logs
+# ------------------------------------------------------------
+
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ------------------------------------------------------------
+# Database
+# ------------------------------------------------------------
+
+*.db
+*.sqlite
+*.sqlite3
+
+# ------------------------------------------------------------
+# Docker (future)
+# ------------------------------------------------------------
+
+# docker-compose.override.yml
+
+# ------------------------------------------------------------
+# Antigravity / AI Assistant
+# ------------------------------------------------------------
+
+# Antigravity workspace and session data
+.gemini/
+.antigravity/
+
+# Scratch directories (temporary AI-generated files)
+scratch/
+
+# AI assistant conversation artifacts (not project docs)
+# Note: docs/ directory files ARE intentionally tracked
+
+# ------------------------------------------------------------
+# Misc
+# ------------------------------------------------------------
+
+# Terraform (future)
+.terraform/
+*.tfstate
+*.tfstate.*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.orig
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+*.7z
