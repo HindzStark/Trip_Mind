@@ -96,7 +96,16 @@ class TripResponse(BaseModel):
     children: int
     interests: str | None
     status: str
+    trip_context: dict | None = None
+    weather: dict | None = None
+    flights: dict | None = None
+    hotels: list[dict] | None = None
+    attractions: list[dict] | None = None
+
+    budget_breakdown: dict | None = None
+    itinerary: dict | None = None
     created_at: datetime
     updated_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+

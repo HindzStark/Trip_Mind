@@ -38,62 +38,55 @@
 
 import uuid
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks, status
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
 from app.schemas.trip import TripCreate, TripUpdate, TripResponse
 from app.services import trip as trip_service
-
+from app.routes.deps import get_current_user
+from app.models.user import User
 
 # Create a router for all trip-related routes
-# prefix="/trips" means all routes here start with /trips
-# tags=["Trips"] groups them in the /docs page
 router = APIRouter(prefix="/trips", tags=["Trips"])
-
-
-# --- TEMPORARY: hardcoded user_id until auth is implemented ---
-# When you build User authentication, you'll replace this with
-# a function that reads the user_id from the JWT token.
-TEMP_USER_ID = uuid.UUID("00000000-0000-0000-0000-000000000001")
 
 
 @router.post("/", response_model=TripResponse, status_code=201)
 def create_trip(
-    trip_data: TripCreate,              # ← FastAPI validates the request body
-    db: Session = Depends(get_db),      # ← FastAPI injects the DB session
+    trip_data: TripCreate,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
-    """
-    POST /trips — Create a new trip.
-
-    trip_data: automatically parsed from the JSON body using TripCreate schema.
-    db: automatically created by get_db() and closed after this function returns.
-    """
-    trip = trip_service.create_trip(db=db, trip_data=trip_data, user_id=TEMP_USER_ID)
+    trip = trip_service.create_trip(db=db, trip_data=trip_data, user_id=current_user.id)
+    background_tasks.add_task(trip_service.run_trip_planning_workflow, db, trip.id)
     return trip
-    # FastAPI sees response_model=TripResponse
-    # → converts the Trip model to TripResponse schema → JSON
 
 
 @router.get("/", response_model=list[TripResponse])
 def get_trips(
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
-    """GET /trips — Get all trips for the current user."""
-    return trip_service.get_trips_by_user(db=db, user_id=TEMP_USER_ID)
+    return trip_service.get_trips_by_user(db=db, user_id=current_user.id)
 
 
 @router.get("/{trip_id}", response_model=TripResponse)
 def get_trip(
-    trip_id: uuid.UUID,                 # ← FastAPI reads this from the URL
+    trip_id: uuid.UUID,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
-    """GET /trips/{trip_id} — Get one trip by ID."""
     trip = trip_service.get_trip_by_id(db=db, trip_id=trip_id)
 
     if trip is None:
-        # 404 = "Not Found" — standard HTTP status code
         raise HTTPException(status_code=404, detail="Trip not found")
+
+    if trip.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to access this trip"
+        )
 
     return trip
 
@@ -103,12 +96,18 @@ def update_trip(
     trip_id: uuid.UUID,
     trip_data: TripUpdate,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
-    """PUT /trips/{trip_id} — Update an existing trip."""
     trip = trip_service.get_trip_by_id(db=db, trip_id=trip_id)
 
     if trip is None:
         raise HTTPException(status_code=404, detail="Trip not found")
+
+    if trip.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to access this trip"
+        )
 
     return trip_service.update_trip(db=db, trip=trip, trip_data=trip_data)
 
@@ -117,14 +116,18 @@ def update_trip(
 def delete_trip(
     trip_id: uuid.UUID,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
-    """
-    DELETE /trips/{trip_id} — Delete a trip.
-    204 = "No Content" — success, but nothing to return.
-    """
     trip = trip_service.get_trip_by_id(db=db, trip_id=trip_id)
 
     if trip is None:
         raise HTTPException(status_code=404, detail="Trip not found")
 
+    if trip.user_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized to access this trip"
+        )
+
     trip_service.delete_trip(db=db, trip=trip)
+

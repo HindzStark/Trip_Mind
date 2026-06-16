@@ -101,5 +101,6 @@ Provide the response in the requested structured format.""",
     })
 
     return {
-        "itinerary": dict(result)
+        "itinerary": dict(result),
+        "status": "completed"
     }

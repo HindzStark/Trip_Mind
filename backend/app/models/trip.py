@@ -22,7 +22,7 @@
 
 import uuid
 from datetime import datetime, date
-from sqlalchemy import String, Integer, Boolean, DateTime, ForeignKey, Text, func, Date
+from sqlalchemy import String, Integer, Boolean, DateTime, ForeignKey, Text, func, Date, JSON
 from sqlalchemy.orm import Mapped, mapped_column
 from app.db.base import Base
 
@@ -66,6 +66,16 @@ class Trip(Base):
     # "pending" → "processing" → "completed" or "failed"
     status: Mapped[str] = mapped_column(String(20), default="pending")
 
+    # Agent Output details stored as JSON
+    trip_context: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    weather: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    flights: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    hotels: Mapped[list[dict] | None] = mapped_column(JSON, nullable=True)
+    attractions: Mapped[list[dict] | None] = mapped_column(JSON, nullable=True)
+
+    budget_breakdown: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+    itinerary: Mapped[dict | None] = mapped_column(JSON, nullable=True)
+
     # Timestamps — auto-filled by PostgreSQL
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
@@ -79,3 +89,4 @@ class Trip(Base):
 
     def __repr__(self) -> str:
         return f"<Trip {self.source_city} → {self.destination_city}>"
+

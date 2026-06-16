@@ -59,8 +59,10 @@ app = FastAPI(
 # This is how APIRouter (in routes/trip.py) connects to the main app.
 
 from app.routes.trip import router as trip_router
-
 app.include_router(trip_router)
+
+from app.routes.auth import router as auth_router
+app.include_router(auth_router)
 
 from app.routes.user import router as user_router
 app.include_router(user_router)

@@ -42,7 +42,7 @@ def AttractionAgent(state: TripState):
     lat = first_feature["properties"]["lat"]
     lon = first_feature["properties"]["lon"]
 
-    url = "https://api.geoapify.v2/places"
+    url = "https://api.geoapify.com/v2/places"
     params = {
         "categories": "tourism,entertainment,leisure.park",
         "filter": f"circle:{lon},{lat},20000",

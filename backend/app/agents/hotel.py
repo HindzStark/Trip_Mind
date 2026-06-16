@@ -43,7 +43,7 @@ def HotelAgent(state: TripState):
     lat = first_feature["properties"]["lat"]
     lon = first_feature["properties"]["lon"]
 
-    url = "https://api.geoapify.v2/places"
+    url = "https://api.geoapify.com/v2/places"
     params = {
         "categories": "accommodation.hotel,accommodation.hostel,accommodation.guest_house",
         "filter": f"circle:{lon},{lat},20000",  
