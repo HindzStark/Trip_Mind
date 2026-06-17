@@ -10,10 +10,8 @@ psycopg[binary]
 
 langchain
 langgraph
-
 langchain-google-genai
-
-
+langchain-openai
 
 httpx
 
@@ -22,8 +20,13 @@ python-dotenv
 loguru
 
 passlib[bcrypt]
+bcrypt
 
 python-jose[cryptography]
+pyjwt
+
+google-auth
+python-multipart
 
 email-validator
 
