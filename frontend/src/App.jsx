@@ -7,7 +7,7 @@ import {
   Activity, CloudSun, Eye, Trash2, CheckCircle2, Briefcase
 } from 'lucide-react';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
 
 const AGENT_STEPS = [
   { title: "Initializing Agent Graph Workflow", desc: "Understanding trip parameters" },

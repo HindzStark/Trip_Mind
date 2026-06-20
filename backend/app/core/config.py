@@ -22,6 +22,8 @@ class Settings(BaseSettings):
 
     GOOGLE_CLIENT_ID: str | None = None
 
+    ALLOWED_ORIGINS: str = "http://localhost:5173,http://127.0.0.1:5173"
+
     model_config = SettingsConfigDict(
 
         env_file=".env",                                            
